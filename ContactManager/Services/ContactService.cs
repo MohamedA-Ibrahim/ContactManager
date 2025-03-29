@@ -1,6 +1,9 @@
-﻿using ContactManager.Data;
+﻿using ContactManager.Contracts.Requests;
+using ContactManager.Data;
 using ContactManager.Data.Models;
+using ContactManager.Helpers.Mappers;
 using ContactManager.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace ContactManager.Services;
 
@@ -13,11 +16,17 @@ public sealed class ContactService : IContactService
         _dbContext = dbContext;
     }
 
-    public async Task<Guid> AddAsync(Contact contact)
+    public async Task<Contact?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
     {
+        return await _dbContext.Contacts.FirstOrDefaultAsync(c=> c.Id == id, cancellationToken);
+    }
+    public async Task<Contact> AddAsync(AddContactRequest request)
+    {
+        var contact = request.ToModel();
+
         await _dbContext.Contacts.AddAsync(contact);
         await _dbContext.SaveChangesAsync();
 
-        return contact.Id;
+        return contact; 
     }
 }

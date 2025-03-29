@@ -1,6 +1,6 @@
 @ContactManager_HostAddress = http://localhost:5098/api
 
-POST {{ContactManager_HostAddress}}/contacts/
+POST {{ContactManager_HostAddress}}/contacts
 Content-Type: application/json
 {
   "name":"test contact name",
@@ -10,3 +10,6 @@ Content-Type: application/json
 }
 
 ###
+
+GET {{ContactManager_HostAddress}}/contacts/66c13292-0870-4952-0112-08dd6f0c5c44
+Content-Type: application/json

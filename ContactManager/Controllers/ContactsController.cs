@@ -1,4 +1,5 @@
 ﻿using ContactManager.Contracts.Requests;
+using ContactManager.Contracts.Responses;
 using ContactManager.Helpers.Mappers;
 using ContactManager.Helpers.Validations;
 using ContactManager.Services.Interfaces;
@@ -18,6 +19,25 @@ public class ContactsController : ControllerBase
     }
 
     /// <summary>
+    /// Get contact by id
+    /// </summary>
+    /// <param name="id">Contact Id</param>
+    /// <param name="cancellation"></param>
+    [HttpGet("{id}")]
+    [ProducesResponseType(typeof(ContactResponse), 200)]
+    [ProducesResponseType(400)]
+    public async Task<IActionResult> GetById([FromRoute] Guid id, CancellationToken cancellation)
+    {
+        var contact = await _contactService.GetByIdAsync(id, cancellation);
+        if (contact == null)
+            return NotFound();
+
+        var response = contact.ToResponse();
+
+        return Ok(response);
+    }
+
+    /// <summary>
     /// Add contact
     /// </summary>
     /// <param name="request">contact details</param>
@@ -30,10 +50,8 @@ public class ContactsController : ControllerBase
         if (!validationResult.IsValid)
             return BadRequest(validationResult);
 
-        var contact = request.ToModel();
+        var addedContact = await _contactService.AddAsync(request);
 
-        await _contactService.AddAsync(contact);
-
-        return Ok("Contact added successfully");
+        return CreatedAtAction(nameof(GetById), new { addedContact.Id }, addedContact);
     }
 }
