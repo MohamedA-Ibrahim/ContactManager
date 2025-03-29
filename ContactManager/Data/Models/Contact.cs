@@ -18,4 +18,6 @@ public class Contact
 
     [MaxLength(500)]
     public string? Notes { get; set; }
+
+    public DateTime CreatedAt { get; set; }
 }
