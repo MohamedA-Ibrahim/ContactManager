@@ -1,4 +1,6 @@
-﻿using ContactManager.Contracts.Requests;
+﻿using ContactManager.Contracts;
+using ContactManager.Contracts.Filters;
+using ContactManager.Contracts.Requests;
 using ContactManager.Contracts.Responses;
 using ContactManager.Helpers.Mappers;
 using ContactManager.Helpers.Validations;
@@ -17,6 +19,21 @@ public class ContactsController : ControllerBase
     {
         _contactService = contactService;
     }
+
+    /// <summary>
+    /// Get all contacts
+    /// </summary>
+    /// <param name="filter">Pagination filter</param>
+    /// <param name="cancellation"></param>
+    [HttpGet]
+    [ProducesResponseType(typeof(PaginatedResult<ContactResponse>), 200)]
+    public async Task<IActionResult> GetById([FromQuery] GetAllContactsFilter filter,[FromQuery] PaginationFilter paginationFilter, CancellationToken cancellation)
+    {
+        var contacts = await _contactService.GetAllAsync(filter, paginationFilter, cancellation);
+    
+        return Ok(contacts);
+    }
+
 
     /// <summary>
     /// Get contact by id
