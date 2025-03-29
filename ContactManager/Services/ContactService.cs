@@ -24,9 +24,12 @@ public sealed class ContactService : IContactService
     {
         var contact = request.ToModel();
 
+        contact.CreatedAt = DateTime.UtcNow;
+
         await _dbContext.Contacts.AddAsync(contact);
         await _dbContext.SaveChangesAsync();
 
         return contact; 
     }
+
 }
