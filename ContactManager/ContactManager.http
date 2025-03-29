@@ -1,6 +1,12 @@
-@ContactManager_HostAddress = http://localhost:5098
+@ContactManager_HostAddress = http://localhost:5098/api
 
-GET {{ContactManager_HostAddress}}/weatherforecast/
-Accept: application/json
+POST {{ContactManager_HostAddress}}/contacts/
+Content-Type: application/json
+{
+  "name":"test contact name",
+  "phone":"01061816772",
+  "address":"test address",
+  "notes":"test notes"
+}
 
 ###

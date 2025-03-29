@@ -1,3 +1,4 @@
+using ContactManager;
 using ContactManager.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,6 +10,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
+builder.Services.AddAppServices();
 
 var app = builder.Build();
 
