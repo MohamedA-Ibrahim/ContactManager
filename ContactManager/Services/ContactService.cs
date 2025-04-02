@@ -82,4 +82,21 @@ public sealed class ContactService : IContactService
         return contact; 
     }
 
+    public async Task<bool> UpdateAsync(Guid id, UpdateContactRequest request)
+    {
+        var existingContact = await _dbContext.Contacts.FindAsync(id);
+        if (existingContact == null)
+            return false;
+
+        existingContact.Name = request.Name;
+        existingContact.Phone = request.Phone;
+        existingContact.Notes = request.Notes;
+        existingContact.Address = request.Address;
+
+        _dbContext.Contacts.Update(existingContact);
+
+        await _dbContext.SaveChangesAsync();
+
+        return true;
+    }
 }

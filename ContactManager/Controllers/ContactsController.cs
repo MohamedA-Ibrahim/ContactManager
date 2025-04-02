@@ -71,4 +71,24 @@ public class ContactsController : ControllerBase
 
         return CreatedAtAction(nameof(GetById), new { addedContact.Id }, addedContact);
     }
+
+    /// <summary>
+    /// Update contact
+    /// </summary>
+    /// <param name="request">contact details</param>
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdateContact([FromRoute]Guid id, [FromBody] UpdateContactRequest request)
+    {
+        var validator = new UpdateContactValidator();
+        var validationResult = validator.Validate(request);
+
+        if (!validationResult.IsValid)
+            return BadRequest(validationResult);
+
+        bool updated = await _contactService.UpdateAsync(id, request);
+        if (!updated)
+            return NotFound();
+
+        return Ok();
+    }
 }
