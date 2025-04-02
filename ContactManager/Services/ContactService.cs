@@ -99,4 +99,17 @@ public sealed class ContactService : IContactService
 
         return true;
     }
+
+    public async Task<bool> DeleteAsync(Guid id)
+    {
+        var existingContact = await _dbContext.Contacts.FindAsync(id);
+        if (existingContact == null)
+            return false;
+      
+        _dbContext.Contacts.Remove(existingContact);
+
+        await _dbContext.SaveChangesAsync();
+
+        return true;
+    }
 }

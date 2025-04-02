@@ -12,4 +12,5 @@ public interface IContactService
     Task<Contact?> GetByIdAsync(Guid id, CancellationToken cancellationToken);
     Task<PaginatedResult<ContactResponse>> GetAllAsync(GetAllContactsFilter filter, PaginationFilter paginationFilter, CancellationToken cancellationToken);
     Task<bool> UpdateAsync(Guid id, UpdateContactRequest request);
+    Task<bool> DeleteAsync(Guid id);
 }

@@ -91,4 +91,17 @@ public class ContactsController : ControllerBase
 
         return Ok();
     }
+
+    /// <summary>
+    /// Delete contact
+    /// </summary>
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteContact([FromRoute] Guid id)
+    {
+        bool deleted = await _contactService.DeleteAsync(id);
+        if (!deleted)
+            return NotFound();
+
+        return NoContent();
+    }
 }
