@@ -23,6 +23,14 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+    app.MapScalarApiReference(options=>
+    {
+        options
+        .WithTheme(ScalarTheme.Default)
+        .WithDarkMode(false)
+        .WithDarkModeToggle(true)
+        .WithDefaultHttpClient(ScalarTarget.CSharp, ScalarClient.HttpClient);
+    });
 }
 
 app.UseHttpsRedirection();
